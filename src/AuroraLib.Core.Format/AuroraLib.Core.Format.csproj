@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net8.0;netstandard2.1;netstandard2.0;</TargetFrameworks>
+    <RootNamespace>AuroraLib.Core.Format</RootNamespace>
+    <Title>AuroraLib.Core.Format</Title>
+    <Version>1.0.0.1</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <ImplicitUsings>false</ImplicitUsings>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <Authors>Venomalia</Authors>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Description>A library for a defining and fast detecting custom file formats using stream signatures, content match, MIME types, and extensions.</Description>
+    <RepositoryUrl>https://github.com/Venomalia/AuroraLib.Core.Format</RepositoryUrl>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/Venomalia/AuroraLib.Core.Format</PackageProjectUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NETFrameworks>|netstandard2.0|net481|net48|net472|NET471|NET47|NET462|NET461|</NETFrameworks>
+  </PropertyGroup>
+  
+  <Choose>
+    <When Condition="$(NETFrameworks.Contains('|$(TargetFramework)|'))">
+      <PropertyGroup>
+        <LangVersion>8.0</LangVersion>
+      </PropertyGroup>
+      <ItemGroup>
+        <PackageReference Include="System.Memory" Version="4.6.3" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  
+  <ItemGroup>
+    <None Include="..\..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  
+</Project>
