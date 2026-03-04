@@ -114,10 +114,9 @@ namespace AuroraLib.Core.Format
         {
             if (stream is null) throw new ArgumentNullException(nameof(stream));
 
-            if (stream.Length >= 0x10)
+            long startPos = stream.Position;
+            if (stream.Length - startPos >= 0x8)
             {
-                stream.Seek(0, SeekOrigin.Begin);
-
 #if NET20_OR_GREATER || NETSTANDARD2_0
                 byte[] buffer = new byte[8];
                 stream.Read(buffer, 0, 8);
@@ -125,8 +124,7 @@ namespace AuroraLib.Core.Format
                 Span<byte> buffer = stackalloc byte[8];
                 stream.Read(buffer);
 #endif
-                stream.Seek(0, SeekOrigin.Begin);
-
+                stream.Position = startPos;
                 Identifier64 identifier = new Identifier64(buffer);
 
                 if (IdentifierLUT.TryGetValue(identifier, out format) && Match(format, stream, fileNameAndExtension))
@@ -140,9 +138,11 @@ namespace AuroraLib.Core.Format
             {
                 if (Match(item, stream, fileNameAndExtension))
                 {
+                    stream.Position = startPos;
                     format = item;
                     return true;
                 }
+                stream.Position = startPos;
             }
             format = null;
             return false;
