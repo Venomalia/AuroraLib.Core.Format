@@ -106,16 +106,13 @@ namespace AuroraLib.Core.Format.Identifier
         /// <inheritdoc />
         public bool Equals(IIdentifier? other) => !(other is null) && other.AsSpan().SequenceEqual(AsSpan());
 
-        public static implicit operator ReadOnlySpan<byte>(Identifier32 v) => v.AsSpan();
+        public static implicit operator ReadOnlySpan<byte>(in Identifier32 v) => v.AsSpan();
 
         public static implicit operator Identifier32(uint v) => *(Identifier32*)&v;
         public static implicit operator uint(Identifier32 v) => *(uint*)&v;
 
         public static explicit operator Identifier32(int v) => *(Identifier32*)&v;
         public static explicit operator int(Identifier32 v) => *(int*)&v;
-
-        public static explicit operator Identifier32(string v) => new Identifier32(v.AsSpan());
-        public static explicit operator string(Identifier32 v) => v.GetString();
 
         /// <inheritdoc />
         public override int GetHashCode() => AsSpan().SequenceGetHashCode();

@@ -39,7 +39,7 @@ public sealed class MyFormat : IFormatInfoProvider
 }
 ```
 Define a simple PNG format without implementing IFormatProvider
-This is useful for external formats, formats that only need signature/extension recognition, or formats that don’t require custom logic.
+This is useful for external formats, formats that only need signature/extension recognition, or formats that don´t require custom logic.
 
 ``` csharp
 // Define a simple PNG format
