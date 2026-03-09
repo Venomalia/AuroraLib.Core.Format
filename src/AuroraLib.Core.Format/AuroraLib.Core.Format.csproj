@@ -4,7 +4,7 @@
     <TargetFrameworks>net10.0;net8.0;netstandard2.1;netstandard2.0;</TargetFrameworks>
     <RootNamespace>AuroraLib.Core.Format</RootNamespace>
     <Title>AuroraLib.Core.Format</Title>
-    <Version>1.0.2.0</Version>
+    <Version>1.0.3.0</Version>
     <AssemblyVersion>$(Version)</AssemblyVersion>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

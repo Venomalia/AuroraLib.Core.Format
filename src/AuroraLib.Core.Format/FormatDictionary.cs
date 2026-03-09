@@ -109,11 +109,27 @@ namespace AuroraLib.Core.Format
 #if NET6_0_OR_GREATER
         public bool Identify(Stream stream, ReadOnlySpan<char> fileNameAndExtension, [MaybeNullWhen(false)] out IFormatInfo format)
 #else
-        public bool Identify(Stream stream, ReadOnlySpan<char> fileNameAndExtension, out IFormatInfo? format)
+        public bool Identify(Stream stream, ReadOnlySpan<char> fileNameAndExtension, out IFormatInfo format)
 #endif
         {
-            if (stream is null) throw new ArgumentNullException(nameof(stream));
+            foreach (var f in Identify(stream, fileNameAndExtension.ToString()))
+            {
+                format = f;
+                return true;
+            }
+            format = null;
+            return false;
+        }
 
+        /// <summary>
+        /// Identifies the format of the provided stream based on its content and or file extension.
+        /// </summary>
+        /// <param name="stream">The data stream to analyze for format identification.</param>
+        /// <param name="fileNameAndExtension">The file name and extension (optional).</param>
+        /// <returns>A sequence of formats that match the provided stream and/or file extension.</returns>
+        public IEnumerable<IFormatInfo> Identify(Stream stream, string? fileNameAndExtension = null)
+        {
+            if (stream is null) throw new ArgumentNullException(nameof(stream));
             long startPos = stream.Position;
             if (stream.Length - startPos >= 0x8)
             {
@@ -127,25 +143,22 @@ namespace AuroraLib.Core.Format
                 stream.Position = startPos;
                 Identifier64 identifier = new Identifier64(buffer);
 
-                if (IdentifierLUT.TryGetValue(identifier, out format) && Match(format, stream, fileNameAndExtension))
-                    return true;
+                if (IdentifierLUT.TryGetValue(identifier, out IFormatInfo format) && Match(format, stream, fileNameAndExtension.AsSpan()))
+                    yield return format;
 
-                if (IdentifierLUT.TryGetValue(identifier.Lower, out format) && Match(format, stream, fileNameAndExtension))
-                    return true;
+                if (IdentifierLUT.TryGetValue(identifier.Lower, out format) && Match(format, stream, fileNameAndExtension.AsSpan()))
+                    yield return format;
             }
 
             foreach (IFormatInfo item in Remaining)
             {
-                if (Match(item, stream, fileNameAndExtension))
+                if (Match(item, stream, fileNameAndExtension.AsSpan()))
                 {
                     stream.Position = startPos;
-                    format = item;
-                    return true;
+                    yield return item;
                 }
                 stream.Position = startPos;
             }
-            format = null;
-            return false;
         }
 
         /// <inheritdoc cref="Identify(Stream, ReadOnlySpan{char}, out IFormatInfo)"/>
