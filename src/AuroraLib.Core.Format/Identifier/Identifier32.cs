@@ -114,6 +114,9 @@ namespace AuroraLib.Core.Format.Identifier
         public static explicit operator Identifier32(int v) => *(Identifier32*)&v;
         public static explicit operator int(Identifier32 v) => *(int*)&v;
 
+        public static explicit operator Identifier32(string v) => new Identifier32(v.AsSpan());
+        public static explicit operator string(Identifier32 v) => v.GetString();
+
         /// <inheritdoc />
         public override int GetHashCode() => AsSpan().SequenceGetHashCode();
 
